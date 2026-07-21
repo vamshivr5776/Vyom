@@ -1,1 +1,441 @@
 
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vyom Launcher | Engineering the Future of Spaceflight</title>
+    <meta name="description" content="India's emerging aerospace startup based in Vijayapura, specializing in reliable and affordable launch systems.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        orbitron: ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        spaceBlack: '#05050a',
+                        spaceDeep: '#0a0a1a',
+                        spaceBlue: '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #05050a;
+            color: white;
+            overflow-x: hidden;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #fff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        #star-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="font-sans">
+
+    <canvas id="star-canvas"></canvas>
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 glass py-4 px-6 flex justify-between items-center">
+        <a href="#" class="font-orbitron text-xl font-bold tracking-tighter">
+            VYOM <span class="text-gray-400 font-light">LAUNCHER</span>
+        </a>
+        <div class="hidden md:flex gap-8">
+            <a href="#home" class="nav-link text-xs uppercase tracking-widest hover:text-spaceBlue">Home</a>
+            <a href="#about" class="nav-link text-xs uppercase tracking-widest hover:text-spaceBlue">About</a>
+            <a href="#tech" class="nav-link text-xs uppercase tracking-widest hover:text-spaceBlue">Technology</a>
+            <a href="#missions" class="nav-link text-xs uppercase tracking-widest hover:text-spaceBlue">Missions</a>
+            <a href="#careers" class="nav-link text-xs uppercase tracking-widest hover:text-spaceBlue">Careers</a>
+            <a href="#contact" class="nav-link text-xs uppercase tracking-widest hover:text-spaceBlue">Contact</a>
+        </div>
+        <!-- Mobile Menu Toggle -->
+        <div class="md:hidden text-white cursor-pointer" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+            <i data-lucide="menu"></i>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-spaceBlack flex flex-col items-center justify-center gap-8 font-orbitron text-xl hidden">
+        <a href="#home" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="hover:text-spaceBlue">Home</a>
+        <a href="#about" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="hover:text-spaceBlue">About</a>
+        <a href="#tech" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="hover:text-spaceBlue">Technology</a>
+        <a href="#missions" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="hover:text-spaceBlue">Missions</a>
+        <a href="#careers" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="hover:text-spaceBlue">Careers</a>
+        <a href="#contact" onclick="document.getElementById('mobile-menu').classList.add('hidden')" class="hover:text-spaceBlue">Contact</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="h-screen flex flex-col justify-center items-center text-center px-4">
+        <h1 id="hero-title" class="font-orbitron text-5xl md:text-8xl font-bold text-gradient mb-6 leading-tight">
+            Engineering the Future <br> of Spaceflight
+        </h1>
+        <div id="hero-btns" class="flex flex-col md:flex-row gap-4 opacity-0">
+            <a href="#missions" class="px-8 py-3 bg-white text-black font-bold rounded-sm hover:bg-gray-200 transition-all">Our Missions</a>
+            <a href="#contact" class="px-8 py-3 border border-white text-white font-bold rounded-sm hover:bg-white hover:text-black transition-all">Contact Us</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6 max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="font-orbitron text-4xl font-bold mb-4">About Vyom Launcher</h2>
+            <div class="h-1 w-20 bg-spaceBlue mx-auto"></div>
+        </div>
+        
+        <div class="glass p-8 rounded-2xl mb-16 text-center text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
+            Vyom Launcher is an emerging aerospace startup based in <span class="text-white font-semibold">Vijayapura, India</span>. 
+            We are dedicated to pushing the boundaries of orbital mechanics, propulsion, and launch efficiency to lower the cost of access to space.
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-12 mb-20">
+            <div class="glass p-10 rounded-2xl text-center border-t-4 border-spaceBlue founder-card">
+                <h3 class="font-orbitron text-2xl font-bold">Vamshi V R</h3>
+                <p class="text-gray-400 uppercase tracking-widest text-sm mt-2">Founder</p>
+            </div>
+            <div class="glass p-10 rounded-2xl text-center border-t-4 border-spaceBlue founder-card">
+                <h3 class="font-orbitron text-2xl font-bold">Pranav V Athreya</h3>
+                <p class="text-gray-400 uppercase tracking-widest text-sm mt-2">Co-Founder</p>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="glass p-8 rounded-xl hover:border-spaceBlue transition-colors">
+                <h3 class="font-orbitron text-spaceBlue mb-4 flex items-center gap-2">
+                    <i data-lucide="target" class="w-5 h-5"></i> Our Mission
+                </h3>
+                <p class="text-gray-300 italic text-lg">"To make space access reliable, affordable, and Indian-driven."</p>
+            </div>
+            <div class="glass p-8 rounded-xl hover:border-spaceBlue transition-colors">
+                <h3 class="font-orbitron text-spaceBlue mb-4 flex items-center gap-2">
+                    <i data-lucide="eye" class="w-5 h-5"></i> Our Vision
+                </h3>
+                <p class="text-gray-300 italic text-lg">"To position India as a global leader in launch systems."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="tech" class="py-24 px-6 bg-spaceDeep">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="font-orbitron text-4xl font-bold mb-4">Advanced Technology</h2>
+                <div class="h-1 w-20 bg-spaceBlue mx-auto"></div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="glass p-8 rounded-xl text-center tech-card group cursor-pointer">
+                    <div class="mb-6 text-spaceBlue group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="rocket" class="w-12 h-12 mx-auto"></i>
+                    </div>
+                    <h3 class="font-orbitron text-xl mb-3">Launch Vehicles</h3>
+                    <p class="text-gray-400">Reusable vertical takeoff systems designed for optimized Low Earth Orbit (LEO) deployment.</p>
+                </div>
+                <div class="glass p-8 rounded-xl text-center tech-card group cursor-pointer">
+                    <div class="mb-6 text-spaceBlue group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="zap" class="w-12 h-12 mx-auto"></i>
+                    </div>
+                    <h3 class="font-orbitron text-xl mb-3">Propulsion</h3>
+                    <p class="text-gray-400">Advanced liquid-fuel engines leveraging high-performance alloys and optimized thrust ratios.</p>
+                </div>
+                <div class="glass p-8 rounded-xl text-center tech-card group cursor-pointer">
+                    <div class="mb-6 text-spaceBlue group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="cpu" class="w-12 h-12 mx-auto"></i>
+                    </div>
+                    <h3 class="font-orbitron text-xl mb-3">Avionics</h3>
+                    <p class="text-gray-400">Real-time guidance and navigation systems ensuring pinpoint accuracy for satellite injection.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Missions Section -->
+    <section id="missions" class="py-24 px-6 max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="font-orbitron text-4xl font-bold mb-4">Upcoming Missions</h2>
+            <div class="h-1 w-20 bg-spaceBlue mx-auto"></div>
+        </div>
+        
+        <div class="space-y-12">
+            <div class="relative pl-8 border-l-2 border-spaceBlue py-4 mission-item">
+                <div class="absolute -left-[9px] top-6 w-4 h-4 bg-spaceBlue rounded-full shadow-[0_0_10px_#3b82f6]"></div>
+                <div class="glass p-6 rounded-xl">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-orbitron text-2xl">Vyom-1</h3>
+                        <span class="text-xs bg-blue-900 text-blue-200 px-2 py-1 rounded">Planned</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Initial sub-orbital test launch to validate propulsion and stage separation systems.</p>
+                    <p class="text-sm font-mono text-gray-500">Window: Q4 2026</p>
+                </div>
+            </div>
+            <div class="relative pl-8 border-l-2 border-spaceBlue py-4 mission-item">
+                <div class="absolute -left-[9px] top-6 w-4 h-4 bg-spaceBlue rounded-full shadow-[0_0_10px_#3b82f6]"></div>
+                <div class="glass p-6 rounded-xl">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-orbitron text-2xl">Vyom-2</h3>
+                        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Conceptual</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">First Low Earth Orbit (LEO) deployment targeting small satellite constellations.</p>
+                    <p class="text-sm font-mono text-gray-500">Window: 2027</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Careers Section -->
+    <section id="careers" class="py-24 px-6 bg-spaceDeep text-center">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="font-orbitron text-4xl font-bold mb-6">Join the Mission</h2>
+            <p class="text-gray-400 mb-12 text-lg">Join us in building the future of space exploration. We are looking for visionaries, engineers, and dreamers.</p>
+            
+            <div class="glass p-8 rounded-2xl text-left">
+                <form class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm text-gray-400">Full Name</label>
+                            <input type="text" class="p-3 bg-black border border-gray-700 rounded outline-none focus:border-spaceBlue" required>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm text-gray-400">Email Address</label>
+                            <input type="email" class="p-3 bg-black border border-gray-700 rounded outline-none focus:border-spaceBlue" required>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="text-sm text-gray-400">Upload Resume (PDF)</label>
+                        <input type="file" class="p-3 bg-black border border-gray-700 rounded outline-none focus:border-spaceBlue" accept=".pdf">
+                    </div>
+                    <button type="submit" class="w-full py-4 bg-spaceBlue text-white font-bold rounded hover:bg-blue-700 transition-all uppercase tracking-widest">
+                        Submit Application
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6 max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="font-orbitron text-4xl font-bold mb-4">Get In Touch</h2>
+            <div class="h-1 w-20 bg-spaceBlue mx-auto"></div>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-12">
+            <div class="space-y-6">
+                <div class="glass p-6 rounded-xl flex items-start gap-4">
+                    <i data-lucide="mail" class="text-spaceBlue w-6 h-6"></i>
+                    <div>
+                        <h4 class="font-orbitron text-xs text-gray-400 uppercase mb-1">Email</h4>
+                        <p>Vamshivr5776@gmail.com</p>
+                        <p>Pranavathreya40@gmail.com</p>
+                    </div>
+                </div>
+                <div class="glass p-6 rounded-xl flex items-start gap-4">
+                    <i data-lucide="phone" class="text-spaceBlue w-6 h-6"></i>
+                    <div>
+                        <h4 class="font-orbitron text-xs text-gray-400 uppercase mb-1">Phone</h4>
+                        <p>+91 6360305776</p>
+                        <p>+91 8296253793</p>
+                    </div>
+                </div>
+                <div class="glass p-6 rounded-xl flex items-start gap-4">
+                    <i data-lucide="map-pin" class="text-spaceBlue w-6 h-6"></i>
+                    <div>
+                        <h4 class="font-orbitron text-xs text-gray-400 uppercase mb-1">Location</h4>
+                        <p>Vijayapura, Karnataka, India</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass p-8 rounded-2xl">
+                <form class="space-y-4">
+                    <input type="text" placeholder="Name" class="w-full p-3 bg-black border border-gray-700 rounded focus:border-spaceBlue outline-none">
+                    <input type="email" placeholder="Email" class="w-full p-3 bg-black border border-gray-700 rounded focus:border-spaceBlue outline-none">
+                    <textarea placeholder="Your Message" rows="4" class="w-full p-3 bg-black border border-gray-700 rounded focus:border-spaceBlue outline-none"></textarea>
+                    <button class="w-full py-3 bg-white text-black font-bold rounded hover:bg-gray-200 transition-all">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-gray-800 text-center">
+        <div class="font-orbitron text-lg font-bold mb-4">
+            VYOM <span class="text-gray-400 font-light">LAUNCHER</span>
+        </div>
+        <p class="text-gray-500 text-sm mb-6">© 2026 Vyom Launcher Aerospace. All rights reserved.</p>
+        <div class="flex justify-center gap-6 text-gray-400">
+            <a href="#" class="hover:text-white"><i data-lucide="twitter"></i></a>
+            <a href="#" class="hover:text-white"><i data-lucide="linkedin"></i></a>
+            <a href="#" class="hover:text-white"><i data-lucide="github"></i></a>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // --- Starfield Background ---
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        for (let i = 0; i < 200; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 1.5,
+                opacity: Math.random(),
+                speed: Math.random() * 0.05
+            });
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            stars.forEach(s => {
+                ctx.globalAlpha = s.opacity;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+                ctx.fill();
+                
+                s.opacity += s.speed;
+                if (s.opacity > 1 || s.opacity < 0) s.speed *= -1;
+            });
+            requestAnimationFrame(animateStars);
+        }
+        animateStars();
+
+        // --- GSAP Animations ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Animations
+        gsap.from("#hero-title", {
+            duration: 1.5,
+            y: 50,
+            opacity: 0,
+            ease: "power4.out"
+        });
+
+        gsap.to("#hero-btns", {
+            duration: 1,
+            opacity: 1,
+            delay: 0.8,
+            ease: "power2.out"
+        });
+
+        // Section Animations
+        const sections = ['#about', '#tech', '#missions', '#careers', '#contact'];
+        sections.forEach(section => {
+            gsap.from(section, {
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 80%",
+                },
+                duration: 1,
+                y: 50,
+                opacity: 0,
+                ease: "power2.out"
+            });
+        });
+
+        // Founder cards animation
+        gsap.from(".founder-card", {
+            scrollTrigger: {
+                trigger: ".founder-card",
+                start: "top 85%",
+            },
+            duration: 1,
+            scale: 0.8,
+            opacity: 0,
+            stagger: 0.3,
+            ease: "back.out(1.7)"
+        });
+
+        // Tech cards animation
+        gsap.from(".tech-card", {
+            scrollTrigger: {
+                trigger: ".tech-card",
+                start: "top 85%",
+            },
+            duration: 1,
+            y: 30,
+            opacity: 0,
+            stagger: 0.2,
+            ease: "power2.out"
+        });
+
+        // Mission items animation
+        gsap.from(".mission-item", {
+            scrollTrigger: {
+                trigger: ".mission-item",
+                start: "top 85%",
+            },
+            duration: 1,
+            x: -50,
+            opacity: 0,
+            stagger: 0.3,
+            ease: "power2.out"
+        });
+    </script>
+</body>
+</html>
